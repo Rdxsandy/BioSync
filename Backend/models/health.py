@@ -1,9 +1,10 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from datetime import datetime
+
 
 class Health(BaseModel):
     user_id: str
-    date: datetime = datetime.utcnow()
+    date: datetime = Field(default_factory=datetime.utcnow)
     sleep_score: float
     activity_score: float
     nutrition_score: float
