@@ -1,5 +1,7 @@
-from models.meals import meal_collection
+from database.db import db
 from bson import ObjectId
+
+meal_collection = db["meals"]
 
 
 # CREATE MEAL
@@ -22,6 +24,7 @@ def get_user_meals(user_id):
 
 # DELETE MEAL
 def delete_meal(meal_id, user_id):
+
     result = meal_collection.delete_one({
         "_id": ObjectId(meal_id),
         "user_id": user_id
