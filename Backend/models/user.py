@@ -1,6 +1,7 @@
 from pydantic import BaseModel, EmailStr
 from datetime import datetime
 from typing import Optional
+from datetime import datetime, timezone
 #  user model 
 class User(BaseModel):
     name: str
@@ -10,4 +11,4 @@ class User(BaseModel):
     gender: Optional[str]
     height: Optional[float]
     weight: Optional[float]
-    created_at: datetime = datetime.utcnow()
+    created_at: datetime = datetime.now(timezone.utc)
