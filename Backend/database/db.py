@@ -27,10 +27,4 @@ activity_collection = db["activities"]
 meals_collection = db["meals"]
 health_collection = db["health"]
 
-# test insert
-result = users_collection.insert_one({
-    "name": "John",
-    "email": "john@gmail.com"
-})
 
-print("Inserted ID:", result.inserted_id)
