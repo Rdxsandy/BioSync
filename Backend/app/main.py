@@ -5,6 +5,7 @@ from health.routes import router as health_router
 
 from meals.routes import router as meals_router
 from ml.routes import router as ml_router
+from dashboard.routes import router as dashboard_router
 
 
 
@@ -20,4 +21,5 @@ app.include_router(health_router)
 app.include_router(meals_router)
 
 app.include_router(ml_router)
+app.include_router(dashboard_router)
 

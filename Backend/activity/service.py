@@ -4,12 +4,20 @@ from bson import ObjectId
 activity_collection = db["activities"]
 
 
-# CREATE ACTIVITY
-def create_activity(activity_data):
-    result = activity_collection.insert_one(activity_data)
-    activity_data["_id"] = str(result.inserted_id)
-    return activity_data
+from datetime import datetime
 
+# CREATE ACTIVITY
+def create_activity(activity_data: dict):
+
+    # Ensure date exists
+    if "date" not in activity_data:
+        activity_data["date"] = datetime.utcnow()
+
+    result = activity_collection.insert_one(activity_data)
+
+    activity_data["_id"] = str(result.inserted_id)
+
+    return activity_data
 
 # GET ALL ACTIVITIES FOR USER
 def get_user_activities(user_id):
