@@ -4,6 +4,7 @@ import API from "../services/api";
 import Navbar from "../components/navbar";
 import Sidebar from "../components/sidebar";
 import HealthCard from "../components/healthcard";
+import ActivityChart from "../components/activitychart";
 
 function Dashboard() {
   const [data, setData] = useState(null);
@@ -73,6 +74,26 @@ function Dashboard() {
             <HealthCard
               title="Risk Prediction"
               value={data.risk_level || "Unknown"}
+            />
+          </div>
+          {/* Activity Chart */}
+          <div className="grid grid-cols-3 gap-6 mt-8">
+            <ActivityChart
+              title="Steps Trend"
+              data={data.activity_trends.weekly_steps_trend}
+              dataKey="steps"
+            />
+
+            <ActivityChart
+              title="Sleep Trend"
+              data={data.activity_trends.weekly_sleep_trend}
+              dataKey="sleep_hours"
+            />
+
+            <ActivityChart
+              title="Exercise Trend"
+              data={data.activity_trends.weekly_exercise_trend}
+              dataKey="exercise_minutes"
             />
           </div>
         </div>

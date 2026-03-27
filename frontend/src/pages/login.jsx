@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../services/api";
+import BrandHeader from "../components/BrandHeader";
+
 
 function Login() {
   const navigate = useNavigate();
@@ -44,6 +46,7 @@ function Login() {
             Register
           </a>
         </p>
+    
 
         <form onSubmit={handleLogin} className="space-y-4">
           <input
