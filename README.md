@@ -21,11 +21,11 @@ The frontend is responsible for the user interface and user interaction.
 
 ## Responsibilities
 
-### User authentication (login / signup)
-### Activity tracking interface
-### Meal image upload
-### Dashboard visualization
-### Display AI-generated health insights
-### Communicate with backend APIs
+#### User authentication (login / signup)
+#### Activity tracking interface
+#### Meal image upload
+#### Dashboard visualization
+#### Display AI-generated health insights
+#### Communicate with backend APIs
 
 The frontend sends HTTP requests to the FastAPI backend using Axios and includes the JWT token in request headers for secure communication.
