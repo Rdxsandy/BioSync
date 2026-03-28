@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import API from "../services/api";
 
+const BASE_URL = import.meta.env.VITE_API_URL;
+
 function Meals() {
   const [meals, setMeals] = useState([]);
   const [file, setFile] = useState(null);
@@ -28,15 +30,15 @@ function Meals() {
     try {
       setLoading(true);
 
-      const res = await API.post("/meals/analyze", formData, {
+      await API.post("/meals/analyze", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
 
       alert("Meal analyzed successfully!");
-
       fetchMeals();
+      setFile(null);
     } catch (err) {
       console.error("Upload error", err);
       alert("AI analysis failed");
@@ -46,38 +48,54 @@ function Meals() {
   };
 
   return (
-    <div className="p-6 flex-1">
-      <h2 className="text-2xl font-bold mb-6">Meals</h2>
+    <div className="flex-1 px-4 sm:px-6 lg:px-10 py-8 max-w-7xl mx-auto">
+      {/* Page Title */}
+      <h2 className="text-3xl font-bold mb-8 text-gray-800">Meal Analysis</h2>
 
       {/* Upload Section */}
-      <div className="bg-white p-4 rounded shadow mb-6">
-        <input type="file" onChange={(e) => setFile(e.target.files[0])} />
+      <div className="bg-white p-6 rounded-xl shadow-md mb-10 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+        <input
+          type="file"
+          className="border p-2 rounded w-full sm:w-auto"
+          onChange={(e) => setFile(e.target.files[0])}
+        />
 
         <button
           onClick={handleUpload}
-          className="ml-4 bg-blue-500 text-white px-4 py-2 rounded"
+          className="bg-blue-500 hover:bg-blue-600 transition text-white px-6 py-2 rounded-lg"
         >
           {loading ? "Analyzing..." : "Upload Meal"}
         </button>
       </div>
 
-      {/* Meals List */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      {/* Meals Grid */}
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {meals.map((meal) => (
-          <div key={meal._id} className="bg-white p-4 rounded shadow">
+          <div
+            key={meal._id}
+            className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition"
+          >
             <img
-              src={`http://localhost:8000/${meal.image_url}`}
+              src={`${BASE_URL}/${meal.image_url}`}
               alt="meal"
-              className="w-full h-40 object-cover rounded mb-2"
+              className="w-full h-48 object-cover"
             />
 
-            <h3 className="font-bold">{meal.food_name}</h3>
+            <div className="p-4 space-y-2">
+              <h3 className="text-lg font-semibold text-gray-800">
+                {meal.food_name}
+              </h3>
 
-            <p>Calories: {meal.calories}</p>
+              <p className="text-sm text-gray-600">
+                Calories: <span className="font-medium">{meal.calories}</span>
+              </p>
 
-            <p className="text-sm text-gray-600">Best Time: {meal.best_time}</p>
+              <p className="text-sm text-gray-500">
+                Best Time: {meal.best_time}
+              </p>
 
-            <p className="text-sm mt-2">{meal.advice}</p>
+              <p className="text-sm text-gray-700 pt-2">{meal.advice}</p>
+            </div>
           </div>
         ))}
       </div>

@@ -1,43 +1,40 @@
-
 import { useEffect, useState } from "react";
-import axios from "axios";
+import API from "../services/api";
 
 function Health() {
-
-  const [fact, setFact] = useState("");
+  const [tips, setTips] = useState([]);
 
   useEffect(() => {
-
-    const token = localStorage.getItem("token");   // get stored JWT
-
-    axios.get("http://localhost:8000/health/daily-fact", {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-    .then((res) => {
-      setFact(res.data.health_fact);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-
+    fetchHealthFact();
   }, []);
 
-  return (
-    <div style={{ padding: "20px" }}>
-      <h1>Daily Health Fact</h1>
+  const fetchHealthFact = async () => {
+    try {
+      const res = await API.get("/health/daily-fact");
 
-      <div
-        style={{
-          marginTop: "20px",
-          padding: "20px",
-          background: "#f4f4f4",
-          borderRadius: "10px",
-          maxWidth: "500px"
-        }}
-      >
-        {fact ? fact : "Loading today's health tip..."}
+      const text = res.data.health_fact;
+
+      // Split numbered tips
+      const formattedTips = text
+        .split(/\d+\.\s/) // split by "1. 2. 3."
+        .filter((tip) => tip.trim() !== "");
+
+      setTips(formattedTips);
+    } catch (err) {
+      console.error("Error fetching health fact", err);
+    }
+  };
+
+  return (
+    <div className="p-6">
+      <h1 className="text-2xl font-bold">Daily Health Tips</h1>
+
+      <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+        {tips.map((tip, index) => (
+          <div key={index} className="bg-white p-4 rounded shadow border">
+            <p className="text-gray-700">{tip}</p>
+          </div>
+        ))}
       </div>
     </div>
   );
