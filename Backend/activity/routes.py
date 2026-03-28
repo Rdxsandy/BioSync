@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends
 from schema.activity_schema import ActivityCreate
+from activity.service import predict_future_activity
 from auth.dependencies import get_current_user
 from activity.service import (
     create_activity,
@@ -9,6 +10,13 @@ from activity.service import (
 )
 
 router = APIRouter(prefix="/activity", tags=["Activity"])
+
+@router.get("/predict-future")
+def predict_activity(user=Depends(get_current_user)):
+
+    result = predict_future_activity(str(user["_id"]))
+
+    return result
 
 
 # ADD ACTIVITY

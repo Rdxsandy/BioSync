@@ -10,31 +10,32 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60
 
-print("UTILS SECRET_KEY:", SECRET_KEY)
+# token valid for 7 days
+ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7
 
 
 def hash_password(password: str):
+    # bcrypt supports max 72 bytes
+    password = password[:72]
     return pwd_context.hash(password)
 
 
-def verify_password(plain_password, hashed_password):
+def verify_password(plain_password: str, hashed_password: str):
+    # bcrypt supports max 72 bytes
+    plain_password = plain_password[:72]
     return pwd_context.verify(plain_password, hashed_password)
 
 
 def create_access_token(data: dict):
-    print("Creating token for:", data)
-
     to_encode = data.copy()
-    expire = datetime.now(timezone.utc) + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+
+    expire = datetime.now(timezone.utc) + timedelta(
+        minutes=ACCESS_TOKEN_EXPIRE_MINUTES
+    )
 
     to_encode.update({"exp": expire})
 
-    print("Payload before encoding:", to_encode)
-
     token = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
-
-    print("Generated Token:", token)
 
     return token

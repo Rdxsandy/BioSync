@@ -1,14 +1,13 @@
 from database.db import db
 from bson import ObjectId
+from datetime import datetime
+
+from ml.predict import predict_next_7_days
 
 activity_collection = db["activities"]
 
 
-from datetime import datetime
-
 # CREATE ACTIVITY
-from datetime import datetime
-
 def create_activity(activity_data: dict):
 
     today_start = datetime.utcnow().replace(
@@ -40,8 +39,10 @@ def create_activity(activity_data: dict):
 
     return activity_data
 
+
 # GET ALL ACTIVITIES FOR USER
 def get_user_activities(user_id):
+
     activities = []
 
     for activity in activity_collection.find({"user_id": user_id}):
@@ -78,3 +79,43 @@ def delete_activity(activity_id, user_id):
     )
 
     return result.deleted_count
+
+
+# AI ACTIVITY PREDICTION
+def predict_future_activity(user_id):
+
+    activities = list(
+        activity_collection
+        .find({"user_id": user_id})
+        .sort("date", -1)
+        .limit(7)
+    )
+
+    # Ensure we have enough data
+    if len(activities) < 7:
+        return {
+            "error": "Not enough activity data (minimum 7 days required)"
+        }
+
+    activities.reverse()
+
+    sequence = []
+
+    for activity in activities:
+
+        steps = activity.get("steps", 0)
+        sleep = activity.get("sleep_hours", 0)
+        exercise = activity.get("exercise_minutes", 0)
+
+        sequence.append([
+            steps,
+            sleep,
+            exercise
+        ])
+
+    future_predictions = predict_next_7_days(sequence)
+
+    return {
+        "past_7_days": sequence,
+        "future_7_days": future_predictions
+    }
