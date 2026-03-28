@@ -1,5 +1,9 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+
+from dotenv import load_dotenv
+import os
 
 from activity.routes import router as activity_router
 from auth.routes import router as auth_router
@@ -7,18 +11,23 @@ from health.routes import router as health_router
 from meals.routes import router as meals_router
 from ml.routes import router as ml_router
 from dashboard.routes import router as dashboard_router
-from fastapi.staticfiles import StaticFiles
 
+# Load environment variables
+load_dotenv()
 
 app = FastAPI()
 
-# CORS configuration
-origins = [
-    "http://localhost:5173"
-]
+# Get frontend URL
+FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:5173")
 
+print("FRONTEND_URL:", FRONTEND_URL)
+
+origins = [FRONTEND_URL]
+
+# Static uploads
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
+# CORS
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -27,7 +36,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Include routers
+# Routers
 app.include_router(auth_router)
 app.include_router(activity_router)
 app.include_router(health_router)
