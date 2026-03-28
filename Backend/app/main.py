@@ -7,6 +7,8 @@ from health.routes import router as health_router
 from meals.routes import router as meals_router
 from ml.routes import router as ml_router
 from dashboard.routes import router as dashboard_router
+from fastapi.staticfiles import StaticFiles
+
 
 app = FastAPI()
 
@@ -14,6 +16,8 @@ app = FastAPI()
 origins = [
     "http://localhost:5173"
 ]
+
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 app.add_middleware(
     CORSMiddleware,

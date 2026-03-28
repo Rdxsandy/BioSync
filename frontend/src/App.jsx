@@ -4,6 +4,7 @@ import Dashboard from "./pages/dashboard";
 import Register from "./pages/register";
 import BrandHeader from "./components/BrandHeader";
 import Activity from "./pages/activity";
+import Meals from "./pages/meals";
 
 function App() {
   return (
@@ -18,7 +19,7 @@ function App() {
             </>
           }
         />
-
+        <Route path="/meals" element={<Meals />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/register" element={<Register />} />
         <Route path="/activity" element={<Activity />} />
