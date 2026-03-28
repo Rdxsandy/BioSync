@@ -3,6 +3,7 @@ import Login from "./pages/login";
 import Dashboard from "./pages/dashboard";
 import Register from "./pages/register";
 import BrandHeader from "./components/BrandHeader";
+import Activity from "./pages/activity";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
 
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/activity" element={<Activity />} />
       </Routes>
     </BrowserRouter>
   );
