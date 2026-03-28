@@ -8,17 +8,31 @@ health_collection = db["health_scores"]
 
 
 # -----------------------------
-# Latest activity
+# Today's activity
 # -----------------------------
-def get_latest_activity(user_id: str):
+def get_today_activity(user_id: str):
 
-    activity = activity_collection.find_one(
-        {"user_id": user_id},
-        sort=[("date", -1)]
+    today_start = datetime.utcnow().replace(
+        hour=0, minute=0, second=0, microsecond=0
     )
 
+    today_end = today_start + timedelta(days=1)
+
+    activity = activity_collection.find_one({
+        "user_id": user_id,
+        "date": {
+            "$gte": today_start,
+            "$lt": today_end
+        }
+    })
+
     if not activity:
-        return {}
+        return {
+            "steps": 0,
+            "sleep_hours": 0,
+            "exercise_minutes": 0,
+            "water_intake": 0
+        }
 
     return {
         "steps": activity.get("steps", 0),
@@ -61,7 +75,7 @@ def get_weekly_activity_average(user_id: str):
 
 
 # -----------------------------
-# Weekly activity trends (for charts)
+# Weekly activity trends
 # -----------------------------
 def get_weekly_activity_trends(user_id: str):
 
@@ -80,7 +94,12 @@ def get_weekly_activity_trends(user_id: str):
 
     for activity in activities:
 
-        date_str = activity["date"].strftime("%Y-%m-%d")
+        date_value = activity.get("date")
+
+        if date_value:
+            date_str = date_value.strftime("%Y-%m-%d")
+        else:
+            date_str = "unknown"
 
         steps_trend.append({
             "date": date_str,
@@ -113,15 +132,30 @@ def get_calories_today(user_id: str):
         hour=0, minute=0, second=0, microsecond=0
     )
 
+    today_end = today_start + timedelta(days=1)
+
     meals_today = list(
         meals_collection.find({
             "user_id": user_id,
-            "date": {"$gte": today_start}
+            "created_at": {
+                "$gte": today_start,
+                "$lt": today_end
+            }
         })
     )
 
-    return sum(meal.get("calories", 0) for meal in meals_today)
+    total_calories = 0
 
+    for meal in meals_today:
+        value = meal.get("calories", 0)
+
+        try:
+            total_calories += float(value)
+        except (TypeError, ValueError):
+            # ignore invalid values like "Estimated by AI"
+            total_calories += 0
+
+    return round(total_calories, 2)
 
 # -----------------------------
 # Weekly health trend
@@ -138,12 +172,38 @@ def get_weekly_health_trend(user_id: str):
     weekly_trend = []
 
     for record in health_data:
+
+        date_value = record.get("date")
+
+        if date_value:
+            date_str = date_value.strftime("%Y-%m-%d")
+        else:
+            date_str = "unknown"
+
         weekly_trend.append({
-            "date": record["date"].strftime("%Y-%m-%d"),
-            "score": record["total_score"]
+            "date": date_str,
+            "score": record.get("total_score", 0)
         })
 
     return weekly_trend
+
+
+# -----------------------------
+# Calculate health score
+# -----------------------------
+def calculate_health_score(weekly_avg):
+
+    steps = weekly_avg["average_steps_week"]
+    sleep = weekly_avg["average_sleep_week"]
+    exercise = weekly_avg["average_exercise_week"]
+
+    steps_score = min(steps / 10000, 1) * 40
+    sleep_score = min(sleep / 8, 1) * 30
+    exercise_score = min(exercise / 30, 1) * 30
+
+    total_score = steps_score + sleep_score + exercise_score
+
+    return round(total_score, 2)
 
 
 # -----------------------------
@@ -151,11 +211,18 @@ def get_weekly_health_trend(user_id: str):
 # -----------------------------
 def get_dashboard_summary(user_id: str):
 
+    today_activity = get_today_activity(user_id)
+
+    weekly_avg = get_weekly_activity_average(user_id)
+
+    health_score = calculate_health_score(weekly_avg)
+
     return {
-        "activity_today": get_latest_activity(user_id),
-        "weekly_activity_average": get_weekly_activity_average(user_id),
+        "activity_today": today_activity,
+        "weekly_activity_average": weekly_avg,
         "activity_trends": get_weekly_activity_trends(user_id),
         "calories_today": get_calories_today(user_id),
         "weekly_health_trend": get_weekly_health_trend(user_id),
+        "health_score": health_score,
         "risk_level": predict_risk_from_db(user_id)
     }

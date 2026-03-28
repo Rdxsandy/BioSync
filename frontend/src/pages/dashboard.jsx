@@ -12,8 +12,11 @@ function Dashboard() {
   const fetchDashboard = async () => {
     try {
       const response = await API.get("/dashboard/summary");
+
       console.log("Dashboard data:", response.data);
-      setData(response.data);
+
+      // backend now returns { message, data }
+      setData(response.data.data);
     } catch (error) {
       console.error("Dashboard fetch error:", error);
     }
@@ -70,7 +73,7 @@ function Dashboard() {
 
             <HealthCard
               title="Health Score"
-              value={data.weekly_health_trend?.[0]?.score || "N/A"}
+              value={data.health_score || "N/A"}
             />
 
             <HealthCard
@@ -83,19 +86,19 @@ function Dashboard() {
           <div className="grid gap-6 mt-8 grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
             <ActivityChart
               title="Steps Trend"
-              data={data.activity_trends.weekly_steps_trend}
+              data={data.activity_trends?.weekly_steps_trend || []}
               dataKey="steps"
             />
 
             <ActivityChart
               title="Sleep Trend"
-              data={data.activity_trends.weekly_sleep_trend}
+              data={data.activity_trends?.weekly_sleep_trend || []}
               dataKey="sleep_hours"
             />
 
             <ActivityChart
               title="Exercise Trend"
-              data={data.activity_trends.weekly_exercise_trend}
+              data={data.activity_trends?.weekly_exercise_trend || []}
               dataKey="exercise_minutes"
             />
           </div>

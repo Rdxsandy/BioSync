@@ -10,4 +10,9 @@ def dashboard_summary(current_user=Depends(get_current_user)):
 
     user_id = str(current_user["_id"])
 
-    return get_dashboard_summary(user_id)
+    summary = get_dashboard_summary(user_id)
+
+    return {
+        "message": "Dashboard summary fetched successfully",
+        "data": summary
+    }
