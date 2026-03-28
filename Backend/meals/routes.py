@@ -3,8 +3,10 @@ from schema.meal_schema import MealCreate
 from auth.dependencies import get_current_user
 from meals.service import create_meal, get_user_meals, delete_meal
 from ml.ai_service import analyze_food_image
+
 import os
 import shutil
+import uuid
 
 router = APIRouter(prefix="/meals", tags=["Meals"])
 
@@ -18,7 +20,9 @@ async def analyze_meal(
 
     os.makedirs("uploads", exist_ok=True)
 
-    file_path = f"uploads/{file.filename}"
+    # Generate unique filename
+    filename = f"{uuid.uuid4()}_{file.filename}"
+    file_path = f"uploads/{filename}"
 
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
@@ -26,7 +30,6 @@ async def analyze_meal(
     # Run AI model
     result = analyze_food_image(file_path)
 
-    # Handle API error safely
     if "error" in result:
         return {
             "message": "AI analysis failed",
@@ -54,7 +57,7 @@ async def analyze_meal(
 @router.post("/")
 def add_meal(meal: MealCreate, user=Depends(get_current_user)):
 
-    meal_data = meal.dict()
+    meal_data = meal.dict(exclude_none=True)
     meal_data["user_id"] = str(user["_id"])
 
     result = create_meal(meal_data)

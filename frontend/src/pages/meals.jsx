@@ -36,9 +36,8 @@ function Meals() {
         },
       });
 
-      alert("Meal analyzed successfully!");
-      fetchMeals();
       setFile(null);
+      fetchMeals();
     } catch (err) {
       console.error("Upload error", err);
       alert("AI analysis failed");
@@ -47,9 +46,21 @@ function Meals() {
     setLoading(false);
   };
 
+  const handleDelete = async (id) => {
+    const confirmDelete = confirm("Delete this meal?");
+    if (!confirmDelete) return;
+
+    try {
+      await API.delete(`/meals/${id}`);
+      fetchMeals();
+    } catch (err) {
+      console.error("Delete error", err);
+    }
+  };
+
   return (
     <div className="flex-1 px-4 sm:px-6 lg:px-10 py-6 max-w-7xl mx-auto">
-      {/* Page Title */}
+      {/* Title */}
       <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-6 text-gray-800">
         Meal Analysis
       </h2>
@@ -64,6 +75,7 @@ function Meals() {
 
         <button
           onClick={handleUpload}
+          disabled={loading}
           className="w-full sm:w-auto bg-blue-500 hover:bg-blue-600 transition text-white px-6 py-2 rounded-md"
         >
           {loading ? "Analyzing..." : "Upload Meal"}
@@ -77,11 +89,13 @@ function Meals() {
             key={meal._id}
             className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition"
           >
-            <img
-              src={`${BASE_URL}/${meal.image_url}`}
-              alt="meal"
-              className="w-full h-44 sm:h-48 object-cover"
-            />
+            {meal.image_url && (
+              <img
+                src={`${BASE_URL}/${meal.image_url}`}
+                alt="meal"
+                className="w-full h-44 sm:h-48 object-cover"
+              />
+            )}
 
             <div className="p-4 space-y-2">
               <h3 className="text-base sm:text-lg font-semibold text-gray-800">
@@ -99,6 +113,13 @@ function Meals() {
               <p className="text-sm text-gray-700 pt-2 leading-relaxed">
                 {meal.advice}
               </p>
+
+              <button
+                onClick={() => handleDelete(meal._id)}
+                className="mt-3 w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-md text-sm"
+              >
+                Delete Meal
+              </button>
             </div>
           </div>
         ))}
