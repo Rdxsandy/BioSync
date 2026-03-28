@@ -3,14 +3,11 @@ import joblib
 import os
 from tensorflow.keras.models import load_model
 
-# Get directory of this file
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# Model paths
 MODEL_PATH = os.path.join(BASE_DIR, "lstm_activity_model.h5")
 SCALER_PATH = os.path.join(BASE_DIR, "activity_scaler.pkl")
 
-# Load model and scaler
 model = load_model(MODEL_PATH, compile=False)
 scaler = joblib.load(SCALER_PATH)
 
@@ -26,15 +23,17 @@ def predict_next_7_days(activity_data):
     predictions = []
     current_sequence = sequence.copy()
 
+    # averages for sleep & exercise
+    avg_sleep = np.mean(data[:, 1])
+    avg_exercise = np.mean(data[:, 2])
+
     for _ in range(7):
 
         pred = model.predict(current_sequence, verbose=0)
 
-        step_prediction = pred[0][0]
+        step_prediction = float(pred[0][0])
 
-        predictions.append(step_prediction)
-
-        new_row = np.array([[step_prediction, 0, 0]])
+        new_row = np.array([[step_prediction, avg_sleep, avg_exercise]])
 
         new_row_scaled = scaler.transform(new_row)
 
@@ -45,14 +44,12 @@ def predict_next_7_days(activity_data):
             axis=1
         )
 
-    # Convert predictions back to original scale
-    predictions = np.array(predictions).reshape(-1, 1)
+        predictions.append([step_prediction, avg_sleep, avg_exercise])
 
-    fake_rows = np.hstack((predictions, np.zeros((len(predictions), 2))))
+    predictions = np.array(predictions)
 
-    future = scaler.inverse_transform(fake_rows)
+    future = scaler.inverse_transform(predictions)
 
-    steps = future[:, 0]
+    future[:, 0] = np.maximum(future[:, 0], 0)
 
-    steps = np.maximum(steps, 0)
-    return steps.tolist()
+    return future.tolist()
