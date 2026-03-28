@@ -40,10 +40,14 @@ function Activity() {
   ];
 
   return (
-    <div className="p-6 flex-1">
-      <h2 className="text-2xl font-bold mb-6">Activity Trends</h2>
+    <div className="flex-1 px-4 sm:px-6 lg:px-10 py-6 max-w-7xl mx-auto">
+      {/* Page Title */}
+      <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-6 text-gray-800">
+        Activity Trends
+      </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {/* Charts Grid */}
+      <div className="grid gap-6 grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
         <ActivityChart
           data={mergedData}
           dataKey="steps"

@@ -1,9 +1,11 @@
 function HealthCard({ title, value }) {
   return (
-    <div className="bg-white p-4 rounded-lg shadow-md w-56">
-      <h3 className="text-gray-500 text-sm">{title}</h3>
+    <div className="bg-white w-full p-4 sm:p-5 rounded-xl shadow-md hover:shadow-lg transition">
+      <h3 className="text-gray-500 text-xs sm:text-sm font-medium">{title}</h3>
 
-      <p className="text-2xl font-bold mt-2 text-black">{value ?? 0}</p>
+      <p className="text-xl sm:text-2xl lg:text-3xl font-bold mt-2 text-black">
+        {value ?? 0}
+      </p>
     </div>
   );
 }

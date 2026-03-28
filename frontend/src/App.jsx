@@ -10,22 +10,30 @@ import Health from "./pages/health";
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <>
-              <BrandHeader />
-              <Login />
-            </>
-          }
-        />
-        <Route path="/meals" element={<Meals />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/activity" element={<Activity />} />
-        <Route path="/health" element={<Health />} />
-      </Routes>
+      {/* Responsive App Container */}
+      <div className="min-h-screen mx-auto min-w-[230px] max-w-[570px] sm:max-w-[720px] lg:max-w-[1200px]">
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                <BrandHeader />
+                <Login />
+              </>
+            }
+          />
+
+          <Route path="/dashboard" element={<Dashboard />} />
+
+          <Route path="/register" element={<Register />} />
+
+          <Route path="/activity" element={<Activity />} />
+
+          <Route path="/meals" element={<Meals />} />
+
+          <Route path="/health" element={<Health />} />
+        </Routes>
+      </div>
     </BrowserRouter>
   );
 }

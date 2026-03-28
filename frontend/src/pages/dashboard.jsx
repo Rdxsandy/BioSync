@@ -32,20 +32,22 @@ function Dashboard() {
   }
 
   return (
-    <div>
+    <div className="min-h-screen flex flex-col">
       {/* Navbar */}
       <Navbar />
 
-      <div className="flex">
+      <div className="flex flex-1">
         {/* Sidebar */}
         <Sidebar />
 
         {/* Main Dashboard */}
-        <div className="p-6 flex-1 bg-gray-100 min-h-screen">
-          <h2 className="text-2xl font-bold mb-6">Dashboard</h2>
+        <div className="flex-1 bg-gray-100 px-4 sm:px-6 lg:px-10 py-6 max-w-7xl w-full mx-auto">
+          <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-6 text-gray-800">
+            Dashboard
+          </h2>
 
           {/* Health Cards */}
-          <div className="grid grid-cols-3 gap-6">
+          <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             <HealthCard
               title="Steps Today"
               value={data.activity_today?.steps || 0}
@@ -76,8 +78,9 @@ function Dashboard() {
               value={data.risk_level || "Unknown"}
             />
           </div>
-          {/* Activity Chart */}
-          <div className="grid grid-cols-3 gap-6 mt-8">
+
+          {/* Activity Charts */}
+          <div className="grid gap-6 mt-8 grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
             <ActivityChart
               title="Steps Trend"
               data={data.activity_trends.weekly_steps_trend}

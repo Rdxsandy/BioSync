@@ -48,28 +48,30 @@ function Meals() {
   };
 
   return (
-    <div className="flex-1 px-4 sm:px-6 lg:px-10 py-8 max-w-7xl mx-auto">
+    <div className="flex-1 px-4 sm:px-6 lg:px-10 py-6 max-w-7xl mx-auto">
       {/* Page Title */}
-      <h2 className="text-3xl font-bold mb-8 text-gray-800">Meal Analysis</h2>
+      <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-6 text-gray-800">
+        Meal Analysis
+      </h2>
 
       {/* Upload Section */}
-      <div className="bg-white p-6 rounded-xl shadow-md mb-10 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+      <div className="bg-white p-4 sm:p-6 rounded-xl shadow-md mb-8 flex flex-col sm:flex-row sm:items-center gap-4">
         <input
           type="file"
-          className="border p-2 rounded w-full sm:w-auto"
+          className="border border-gray-300 p-2 rounded-md w-full sm:w-auto"
           onChange={(e) => setFile(e.target.files[0])}
         />
 
         <button
           onClick={handleUpload}
-          className="bg-blue-500 hover:bg-blue-600 transition text-white px-6 py-2 rounded-lg"
+          className="w-full sm:w-auto bg-blue-500 hover:bg-blue-600 transition text-white px-6 py-2 rounded-md"
         >
           {loading ? "Analyzing..." : "Upload Meal"}
         </button>
       </div>
 
       {/* Meals Grid */}
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-5 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {meals.map((meal) => (
           <div
             key={meal._id}
@@ -78,11 +80,11 @@ function Meals() {
             <img
               src={`${BASE_URL}/${meal.image_url}`}
               alt="meal"
-              className="w-full h-48 object-cover"
+              className="w-full h-44 sm:h-48 object-cover"
             />
 
             <div className="p-4 space-y-2">
-              <h3 className="text-lg font-semibold text-gray-800">
+              <h3 className="text-base sm:text-lg font-semibold text-gray-800">
                 {meal.food_name}
               </h3>
 
@@ -94,7 +96,9 @@ function Meals() {
                 Best Time: {meal.best_time}
               </p>
 
-              <p className="text-sm text-gray-700 pt-2">{meal.advice}</p>
+              <p className="text-sm text-gray-700 pt-2 leading-relaxed">
+                {meal.advice}
+              </p>
             </div>
           </div>
         ))}

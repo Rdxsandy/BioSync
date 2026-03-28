@@ -10,27 +10,31 @@ import {
 
 function ActivityChart({ data, dataKey, title }) {
   return (
-    <div className="bg-white p-4 rounded-lg shadow-md">
-      <h3 className="text-lg font-semibold mb-4">{title}</h3>
+    <div className="bg-white w-full p-4 sm:p-5 lg:p-6 rounded-xl shadow-md">
+      <h3 className="text-base sm:text-lg lg:text-xl font-semibold mb-3 sm:mb-4 text-gray-800">
+        {title}
+      </h3>
 
-      <ResponsiveContainer width="100%" height={250}>
-        <LineChart data={data}>
-          <CartesianGrid strokeDasharray="3 3" />
+      <div className="w-full h-[220px] sm:h-[250px] lg:h-[280px]">
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart data={data}>
+            <CartesianGrid strokeDasharray="3 3" />
 
-          <XAxis dataKey="date" />
+            <XAxis dataKey="date" />
 
-          <YAxis />
+            <YAxis />
 
-          <Tooltip />
+            <Tooltip />
 
-          <Line
-            type="monotone"
-            dataKey={dataKey}
-            stroke="#2563eb"
-            strokeWidth={3}
-          />
-        </LineChart>
-      </ResponsiveContainer>
+            <Line
+              type="monotone"
+              dataKey={dataKey}
+              stroke="#2563eb"
+              strokeWidth={3}
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
 }
