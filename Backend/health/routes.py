@@ -1,41 +1,36 @@
 from fastapi import APIRouter, Depends
 from auth.dependencies import get_current_user
-from health.service import calculate_health_score, get_weekly_health
-from schema.health_schema import HealthScore
+import google.generativeai as genai
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 router = APIRouter(prefix="/health", tags=["Health"])
 
+# Configure Gemini
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
-# Get today's health score
-@router.get("/today", response_model=HealthScore)
-def get_today_health(user=Depends(get_current_user)):
+model = genai.GenerativeModel("gemini-2.5-flash")
 
-    user_id = str(user["_id"])
 
-    score = calculate_health_score(user_id)
+# -----------------------------
+# AI Daily Health Facts
+# -----------------------------
+@router.get("/daily-fact")
+def get_daily_health_fact(user=Depends(get_current_user)):
 
-    if not score:
-        return {
-            "sleep_score": 0,
-            "activity_score": 0,
-            "nutrition_score": 0,
-            "total_score": 0
-        }
+    try:
+        response = model.generate_content(
+            "Generate 10 short health tips for maintaining a healthy lifestyle."
+        )
+
+        facts = response.text
+
+    except Exception as e:
+        print("Gemini Error:", e)
+        facts = "AI service temporarily unavailable."
 
     return {
-        "sleep_score": score["sleep_score"],
-        "activity_score": score["activity_score"],
-        "nutrition_score": score["nutrition_score"],
-        "total_score": score["total_score"]
+        "health_fact": facts
     }
-
-
-# Get weekly health scores
-@router.get("/weekly")
-def get_weekly_health_score(user=Depends(get_current_user)):
-
-    user_id = str(user["_id"])
-
-    data = get_weekly_health(user_id)
-
-    return data

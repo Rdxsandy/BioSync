@@ -5,6 +5,7 @@ import Register from "./pages/register";
 import BrandHeader from "./components/BrandHeader";
 import Activity from "./pages/activity";
 import Meals from "./pages/meals";
+import Health from "./pages/health";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/register" element={<Register />} />
         <Route path="/activity" element={<Activity />} />
+        <Route path="/health" element={<Health />} />
       </Routes>
     </BrowserRouter>
   );
