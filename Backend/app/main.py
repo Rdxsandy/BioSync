@@ -24,8 +24,8 @@ app.add_middleware(
 )
 
 # Include routers
-app.include_router(activity_router)
 app.include_router(auth_router)
+app.include_router(activity_router)
 app.include_router(health_router)
 app.include_router(meals_router)
 app.include_router(ml_router)

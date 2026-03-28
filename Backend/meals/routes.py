@@ -1,12 +1,56 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, UploadFile, File
 from schema.meal_schema import MealCreate
 from auth.dependencies import get_current_user
 from meals.service import create_meal, get_user_meals, delete_meal
+from ml.ai_service import analyze_food_image
+import os
+import shutil
 
 router = APIRouter(prefix="/meals", tags=["Meals"])
 
 
-# ADD MEAL
+# AI MEAL ANALYSIS
+@router.post("/analyze")
+async def analyze_meal(
+    file: UploadFile = File(...),
+    user=Depends(get_current_user)
+):
+
+    os.makedirs("uploads", exist_ok=True)
+
+    file_path = f"uploads/{file.filename}"
+
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+
+    # Run AI model
+    result = analyze_food_image(file_path)
+
+    # Handle API error safely
+    if "error" in result:
+        return {
+            "message": "AI analysis failed",
+            "error": result["error"]
+        }
+
+    meal_data = {
+        "user_id": str(user["_id"]),
+        "image_url": file_path,
+        "food_name": result["food"],
+        "calories": result["calories"],
+        "best_time": result["best_time"],
+        "advice": result["advice"]
+    }
+
+    saved_meal = create_meal(meal_data)
+
+    return {
+        "message": "Meal analyzed successfully",
+        "data": saved_meal
+    }
+
+
+# ADD MEAL MANUALLY
 @router.post("/")
 def add_meal(meal: MealCreate, user=Depends(get_current_user)):
 
