@@ -11,6 +11,7 @@ from activity.service import (
 
 router = APIRouter(prefix="/activity", tags=["Activity"])
 
+
 @router.get("/predict-future")
 def predict_activity(user=Depends(get_current_user)):
 
@@ -23,7 +24,7 @@ def predict_activity(user=Depends(get_current_user)):
 @router.post("/")
 def add_activity(activity: ActivityCreate, user=Depends(get_current_user)):
 
-    activity_data = activity.dict()
+    activity_data = activity.dict(exclude_none=True)  # ✅ FIXED
     activity_data["user_id"] = str(user["_id"])
 
     result = create_activity(activity_data)
@@ -51,7 +52,7 @@ def update_user_activity(
     user=Depends(get_current_user)
 ):
 
-    activity_data = activity.dict()
+    activity_data = activity.dict(exclude_none=True)  # ✅ FIXED
 
     updated = update_activity(
         activity_id,
