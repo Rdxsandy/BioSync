@@ -8,11 +8,23 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_PATH = os.path.join(BASE_DIR, "lstm_activity_model.h5")
 SCALER_PATH = os.path.join(BASE_DIR, "activity_scaler.pkl")
 
-model = load_model(MODEL_PATH, compile=False)
-scaler = joblib.load(SCALER_PATH)
+model = None
+scaler = None
+
+
+def load_resources():
+    global model, scaler
+
+    if model is None:
+        model = load_model(MODEL_PATH, compile=False)
+
+    if scaler is None:
+        scaler = joblib.load(SCALER_PATH)
 
 
 def predict_next_7_days(activity_data):
+
+    load_resources()
 
     data = np.array(activity_data)
 
@@ -23,7 +35,6 @@ def predict_next_7_days(activity_data):
     predictions = []
     current_sequence = sequence.copy()
 
-    # averages for sleep & exercise
     avg_sleep = np.mean(data[:, 1])
     avg_exercise = np.mean(data[:, 2])
 
