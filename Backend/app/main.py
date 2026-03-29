@@ -4,17 +4,18 @@ from fastapi.staticfiles import StaticFiles
 from dotenv import load_dotenv
 import os
 
-# Load env variables
+# Load environment variables
 load_dotenv()
 
 app = FastAPI()
 
-# Frontend URL
-FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:5173")
+# Allowed frontend origins
+origins = [
+    "http://localhost:5173",  # Local development
+    "https://bio-sync-sandy.vercel.app",  # Production frontend
+]
 
-origins = [FRONTEND_URL]
-
-# CORS
+# CORS Middleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -23,14 +24,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Static uploads
+# Ensure uploads folder exists
 if not os.path.exists("uploads"):
     os.makedirs("uploads")
 
+# Static uploads
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 
-# Simple health check (important for Render)
+# Health / root endpoints (helps Render detect service)
 @app.get("/")
 def root():
     return {"status": "API running"}
