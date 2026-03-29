@@ -70,4 +70,31 @@ Each module typically contains:
 
 - `routes.py` – API endpoints  
 - `service.py` – business logic  
-- `schemas/` – request and response models  
+- `schemas/` – request and response models
+
+  
+
+Added  setup instructions
+
+## Backend Setup
+
+```bash
+cd backend
+pip install -r requirements.txt
+uvicorn app.main:app --reload
+```
+
+
+## Frontend Setup
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+
+
+
+
+
