@@ -29,3 +29,36 @@ The frontend is responsible for the user interface and user interaction.
 #### Communicate with backend APIs
 
 The frontend sends HTTP requests to the FastAPI backend using Axios and includes the JWT token in request headers for secure communication.
+
+## 1. Backend Layer
+
+The backend is built using **FastAPI**, which provides high-performance asynchronous APIs for handling application logic and data processing.
+
+### Responsibilities
+
+- Authentication and JWT validation  
+- User data management  
+- Activity tracking logic  
+- Meal image processing  
+- Machine learning prediction execution  
+- AI-generated health insights  
+- Dashboard data aggregation  
+
+The backend follows a **modular architecture** to keep the code organized and maintainable.
+
+Example backend structure:
+
+backend/
+ ├── auth/
+ ├── activity/
+ ├── meals/
+ ├── dashboard/
+ ├── health/
+ ├── ml/
+ └── database/
+
+Each module typically contains:
+
+- `routes.py` – API endpoints  
+- `service.py` – business logic  
+- `schemas/` – request and response models  
