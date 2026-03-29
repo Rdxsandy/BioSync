@@ -18,7 +18,7 @@ services:
         generateValue: true
 
   # Frontend Vite Service (Static Site)
-  - type: static
+  - type: static_site
     name: biosync-frontend
     buildCommand: "cd frontend && npm install && npm run build"
     staticPublishPath: "./frontend/dist"
