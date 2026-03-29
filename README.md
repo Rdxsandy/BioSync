@@ -72,6 +72,7 @@ Each module typically contains:
 - `service.py` – business logic  
 - `schemas/` – request and response models
 
+  
 
 Added  setup instructions
 
@@ -84,9 +85,4 @@ uvicorn app.main:app --reload
 
 
 
-## Frontend Setup
 
-```bash
-cd frontend
-npm install
-npm run dev
