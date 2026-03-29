@@ -11,36 +11,36 @@ app = FastAPI()
 
 # Allowed frontend origins
 origins = [
-    "http://localhost:5173",  # Local development
-    "https://bio-sync-sandy.vercel.app",  # Production frontend
+    "http://localhost:5173",
+    "https://bio-sync-sandy.vercel.app",
 ]
 
 # CORS Middleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
+    allow_origin_regex=r"https://.*\.vercel\.app",  # allow Vercel preview deployments
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 # Ensure uploads folder exists
-if not os.path.exists("uploads"):
-    os.makedirs("uploads")
+UPLOAD_DIR = "uploads"
+os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 # Static uploads
-app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
+app.mount("/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
 
-
-# Health / root endpoints (helps Render detect service)
+# Root endpoint (helps Render detect the service)
 @app.get("/")
 def root():
     return {"status": "API running"}
 
+# Health endpoint
 @app.get("/health")
 def health():
     return {"status": "healthy"}
-
 
 # Import routers AFTER app creation (prevents slow startup)
 from activity.routes import router as activity_router
