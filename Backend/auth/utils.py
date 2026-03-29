@@ -1,12 +1,10 @@
 import os
+import bcrypt as _bcrypt
 from dotenv import load_dotenv
-from passlib.context import CryptContext
 from jose import jwt
 from datetime import datetime, timedelta, timezone
 
 load_dotenv()
-
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = "HS256"
@@ -15,27 +13,33 @@ ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7
 
 
-def hash_password(password: str):
-    # bcrypt supports max 72 bytes
-    password = password[:72]
-    return pwd_context.hash(password)
+def _truncate_password(password: str) -> bytes:
+    """Encode password to UTF-8 and truncate to 72 bytes (bcrypt hard limit)."""
+    encoded = password.encode("utf-8")
+    return encoded[:72]
 
 
-def verify_password(plain_password: str, hashed_password: str):
-    # bcrypt supports max 72 bytes
-    plain_password = plain_password[:72]
-    return pwd_context.verify(plain_password, hashed_password)
+def hash_password(password: str) -> str:
+    """Hash a password using bcrypt directly (avoids passlib's 72-byte check)."""
+    pw_bytes = _truncate_password(password)
+    hashed = _bcrypt.hashpw(pw_bytes, _bcrypt.gensalt())
+    return hashed.decode("utf-8")
 
 
-def create_access_token(data: dict):
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    """Verify a password against its bcrypt hash."""
+    pw_bytes = _truncate_password(plain_password)
+    try:
+        return _bcrypt.checkpw(pw_bytes, hashed_password.encode("utf-8"))
+    except Exception:
+        return False
+
+
+def create_access_token(data: dict) -> str:
     to_encode = data.copy()
-
     expire = datetime.now(timezone.utc) + timedelta(
         minutes=ACCESS_TOKEN_EXPIRE_MINUTES
     )
-
     to_encode.update({"exp": expire})
-
     token = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
-
     return token

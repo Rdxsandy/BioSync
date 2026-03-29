@@ -1,8 +1,10 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from fastapi.responses import JSONResponse
 from dotenv import load_dotenv
 import os
+import traceback
 
 # Load environment variables
 load_dotenv()
@@ -15,15 +17,25 @@ origins = [
     "https://bio-sync-sandy.vercel.app",
 ]
 
-# CORS Middleware
+# CORS Middleware — must be added BEFORE exception handlers
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
-    allow_origin_regex=r"https://.*\.(vercel\.app|onrender\.com)",  # allow Vercel and Render preview deployments
+    allow_origin_regex=r"https://.*\.(vercel\.app|onrender\.com)",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Global exception handler — ensures CORS headers are present even on 500 errors
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    print(f"Unhandled exception on {request.method} {request.url}: {exc}")
+    traceback.print_exc()
+    return JSONResponse(
+        status_code=500,
+        content={"error": "Internal server error", "detail": str(exc)},
+    )
 
 # Ensure uploads folder exists
 UPLOAD_DIR = "uploads"
