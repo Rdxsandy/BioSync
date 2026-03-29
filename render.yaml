@@ -16,21 +16,3 @@ services:
         sync: false
       - key: SECRET_KEY
         generateValue: true
-
-  # Frontend Vite Service (Static Site)
-  - type: static_site
-    name: biosync-frontend
-    buildCommand: "cd frontend && npm install && npm run build"
-    staticPublishPath: "./frontend/dist"
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /index.html
-    envVars:
-      - key: NODE_VERSION
-        value: 18.x
-      - key: VITE_API_URL
-        fromService:
-          type: web
-          name: biosync-backend
-          envVarKey: RENDER_EXTERNAL_URL
