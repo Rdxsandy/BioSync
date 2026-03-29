@@ -9,9 +9,13 @@ services:
       - key: PYTHON_VERSION
         value: 3.11.0
       - key: MONGODB_URL
-        sync: false # You MUST add this in the Render dashboard manually!
+        sync: false
+      - key: HF_TOKEN
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
       - key: SECRET_KEY
-        generateValue: true # Render automatically generates a secure key for you
+        generateValue: true
 
   # Frontend Vite Service (Static Site)
   - type: static
@@ -25,4 +29,4 @@ services:
         fromService:
           type: web
           name: biosync-backend
-          envVarKey: RENDER_EXTERNAL_URL # Automatically links frontend to the new backend URL!
+          envVarKey: RENDER_EXTERNAL_URL
