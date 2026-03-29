@@ -1,0 +1,28 @@
+services:
+  # Backend FastAPI Service
+  - type: web
+    name: biosync-backend
+    env: python
+    buildCommand: "cd Backend && pip install -r requirements.txt"
+    startCommand: "cd Backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: MONGODB_URL
+        sync: false # You MUST add this in the Render dashboard manually!
+      - key: SECRET_KEY
+        generateValue: true # Render automatically generates a secure key for you
+
+  # Frontend Vite Service (Static Site)
+  - type: static
+    name: biosync-frontend
+    buildCommand: "cd frontend && npm install && npm run build"
+    staticPublishPath: "./frontend/dist"
+    envVars:
+      - key: NODE_VERSION
+        value: 18.x
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: biosync-backend
+          envVarKey: RENDER_EXTERNAL_URL # Automatically links frontend to the new backend URL!
