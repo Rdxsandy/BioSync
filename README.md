@@ -57,6 +57,12 @@ backend/
  ├── ml/
  └── database/
 
+ ## API Documentation
+
+The backend APIs are documented using FastAPI Swagger UI.
+
+![FastAPI Docs](docs/images/fastapi-docs.png)
+
 Each module typically contains:
 
 - `routes.py` – API endpoints  
