@@ -205,5 +205,5 @@ To ensure system reliability and engineering discipline, several test suites hav
    npm run dev
    ```
 3. **Open Browser**:
-   Visit [http://localhost:5173](http://localhost:5173) to access the application.
+   Visit [bio-sync-sandy.vercel.app](bio-sync-sandy.vercel.app) to access the application.
 
