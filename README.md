@@ -107,8 +107,14 @@ To ensure system reliability and engineering discipline, several test suites hav
   - **AI/ML:** Developed and integrated the core machine learning services to power intelligent predictions.
   - **Backend:** Engineered the `activity` and `health` API services using FastAPI; managed the end-to-end backend deployment.
   - **Frontend:** Built the interactive analytics dashboard to effectively visualize user data and AI-driven health insights.
-- **[Teammate Name] - [Role]**: [Brief description of contributions, e.g., JWT integration, documentation]
-- **[Teammate Name] - [Role]**: [Brief description of contributions, e.g., Food Image Classification integration, testing]
+  - **Documentation:** Created and maintained the comprehensive API documentation using FastAPI Swagger UI.
+  
+- **Ayush - Full-Stack Developer & AI Integrator**
+  - **Backend:** Created and developed the `meal` API service for handling food data and image processing.
+  - **Frontend:** Contributed significantly to the UI/UX development of the dashboard, activity tracking page, and health insights page.
+  - **AI Integration:** Implemented the Gemini-powered health insights feature to provide users with personalized, AI-driven actionable advice.
+
+- **[Teammate Name] - [Role]**: [Brief description of contributions, e.g., JWT authentication integration, testing, etc.]
 ---
 
 ## API Documentation
