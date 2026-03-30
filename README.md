@@ -1,16 +1,24 @@
-# System Architecture
-BioSync follows a modern client–server architecture designed to separate the user interface, application logic, and data management into independent layers. This structure improves scalability, maintainability, and performance
-The system integrates lifestyle tracking, AI-powered analysis, and machine learning predictions to generate health insights for users.
+# BioSync – AI-Based Health Tracking System
+## Project Overview
 
-The architecture consists of four primary layers:
-### 1-Frontend (Client Layer)
-### 2-Backend (API Layer)
-### 3-Database Layer
-### 4-AI / Machine Learning Services
+BioSync is an AI-powered health tracking system that monitors user lifestyle activities such as meals, physical activity, and daily habits to generate personalized health insights. The system integrates lifestyle tracking, AI-powered analysis, and machine learning predictions to help users understand and improve their health.
 
-## 1. Frontend Layer
+The platform uses a modern client–server architecture to ensure scalability, maintainability, and performance. BioSync provides a dashboard that visualizes health data and displays AI-generated recommendations.
 
-The frontend is responsible for the user interface and user interaction.
+## Architecture Diagram
+
+BioSync follows a layered architecture consisting of four main layers:
+
+### Frontend (Client Layer)
+### Backend (API Layer)
+### Database Layer
+### AI / Machine Learning Services
+### Architecture Flow
+
+User → Frontend (React) → Backend (FastAPI) → Database (MongoDB)
+                              ↓
+                         AI/ML Services → Predictions → Backend → Frontend Dashboard
+
 
 ## Technology Stack
 
