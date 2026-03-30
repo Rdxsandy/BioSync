@@ -1,12 +1,63 @@
+# BioSync - Personal Health Intelligence System (Codename: STOCKHOLM)
+
+## Project Overview
+BioSync is an end-to-end Personal Health Intelligence System built for the HBTU Campus Drive AI/ML Engineering Team Evaluation. Users can log daily activities (sleep, steps, meals), track health trends, and receive AI-driven insights through an integrated dashboard.
+
+---
+
 # System Architecture
 BioSync follows a modern client–server architecture designed to separate the user interface, application logic, and data management into independent layers. This structure improves scalability, maintainability, and performance
 The system integrates lifestyle tracking, AI-powered analysis, and machine learning predictions to generate health insights for users.
+
+### Architecture Diagram
+```mermaid
+graph TD
+    User((User)) -->|React JS| Frontend[Frontend - Vite + React]
+    Frontend -->|REST API| Backend[Backend - FastAPI]
+    Backend -->|Auth/Data| Database[(MongoDB Atlas)]
+    Backend -->|Model Inference| ML_Service[AI/ML Service]
+    ML_Service -->|Image Classification| VitModel[ViT Model - HuggingFace]
+    ML_Service -->|Time-Series Prediction| LSTM[LSTM Model - TensorFlow/Keras]
+    ML_Service -->|Risk Assessment| RF[Random Forest - Scikit-Learn]
+```
 
 The architecture consists of four primary layers:
 ### 1-Frontend (Client Layer)
 ### 2-Backend (API Layer)
 ### 3-Database Layer
 ### 4-AI / Machine Learning Services
+
+BioSync integrates several machine learning models to provide deep insights:
+- **Food Image Classification**: Uses a Vision Transformer (ViT) via HuggingFace Inference API to identify food items and estimate health advice.
+- **Time-Series Activity Prediction**: Uses an LSTM model implemented with TensorFlow/Keras to forecast the next 7 days of user activity (steps, sleep).
+- **Risk Scoring Model**: A Random Forest classifier implemented with Scikit-Learn that assesses user health risk based on historical logging patterns.
+
+#### ML Implementation Details
+- **Input Data**: User-logged activity logs (steps, sleep), meal images, and nutritional data.
+- **Output Results**: Food labels, 7-day predicted activity trends, and health risk levels (Low/Moderate/High).
+- **Evaluation Metrics**: MSE for time-series predictions; Accuracy/F1-Score for classification models.
+- **Failure Cases**: The system handles missing historical data by applying imputation (using population averages) to ensure continuous operation for new users.
+
+---
+
+## Team Roles & Contributions
+*(Add your team names and contributions here)*
+- **AI/ML Specialist**: Developed LSTM and Risk Scoring models, integrated HuggingFace APIs.
+- **Backend Lead**: Built the FastAPI server, designed the MongoDB schema, and implemented JWT authentication.
+- **Frontend Lead**: Developed the React dashboard, interactive charts (Recharts), and image upload interface.
+- **System Integrator**: Ensured seamless communication between the client, server, and ML models.
+- **Documentation**: Drafted the project overview, API docs, and architectural decisions.
+
+---
+
+## Key Design Decisions (ADR)
+1. **FastAPI for Backend**: Chosen for its high-performance asynchronous capabilities and automatic Swagger documentation.
+2. **MongoDB Atlas**: Selected for its document-based flexibility, ideal for storing irregular time-series activity data and meal image metadata.
+3. **LSTM for Prediction**: Decided to use LSTM (Long Short-Term Memory) networks over simple linear models to better capture temporal patterns in human activity.
+4. **HuggingFace API Integration**: Leveraged pre-trained SOTA Vision models to provide high-accuracy food classification without the overhead of local vision model training.
+5. **JWT for Security**: Implemented stateless JSON Web Token authentication for secure, scalable user management.
+
+---
 
 ## 1. Frontend Layer
 
@@ -79,9 +130,9 @@ Added  setup instructions
 ## Backend Setup
 
 ```bash
-cd backend
+cd Backend
 pip install -r requirements.txt
-uvicorn app.main:app --reload
+python -m uvicorn app.main:app --reload
 ```
 
 
@@ -95,7 +146,7 @@ npm run dev
 
 ## Environment Setup
 
-Create a `.env` file in backend:
+Create a `.env` file in Backend:
 
 ```bash
 MONGODB_URL=your_mongodb_url
@@ -108,9 +159,18 @@ Added end-to-end project execution steps for frontend and backend
 
 ## How to Run
 
-1. Start backend server  
-2. Start frontend server  
-3. Open browser at http://localhost:5173  
+1. **Start Backend Server**:
+   ```bash
+   cd Backend
+   python -m uvicorn app.main:app --reload
+   ```
+2. **Start Frontend Server**:
+   ```bash
+   cd frontend
+   npm run dev
+   ```
+3. **Open Browser**:
+   Visit [http://localhost:5173](http://localhost:5173) to access the application.
 
 
 
