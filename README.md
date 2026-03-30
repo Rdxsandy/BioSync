@@ -102,12 +102,13 @@ To ensure system reliability and engineering discipline, several test suites hav
 ---
 
 ## Team Roles
-*(Add your team names and contributions here)*
-- **AI/ML Specialist**: Developed LSTM and Risk Scoring models, integrated HuggingFace APIs.
-- **Backend Lead**: Built the FastAPI server, designed the MongoDB schema, and implemented JWT authentication.
-- **Frontend Lead**: Developed the React dashboard, interactive charts (Recharts), and image upload interface.
-- **System Integrator**: Ensured seamless communication between the client, server, and ML models.
-- **Documentation**: Drafted the project overview, API docs, and architectural decisions.
+- **Sundeep - Full-Stack & AI/ML Engineer**
+  - **Architecture & Database:** Designed the core system architecture, mapped out the MongoDB data models/schemas, and successfully integrated MongoDB Atlas for flexible data storage.
+  - **AI/ML:** Developed and integrated the core machine learning services to power intelligent predictions.
+  - **Backend:** Engineered the `activity` and `health` API services using FastAPI; managed the end-to-end backend deployment.
+  - **Frontend:** Built the interactive analytics dashboard to effectively visualize user data and AI-driven health insights.
+- **[Teammate Name] - [Role]**: [Brief description of contributions, e.g., JWT integration, documentation]
+- **[Teammate Name] - [Role]**: [Brief description of contributions, e.g., Food Image Classification integration, testing].
 
 ---
 
