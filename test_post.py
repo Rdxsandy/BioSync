@@ -1,30 +1,27 @@
-import urllib.request
-import urllib.error
-import json
+import google.generativeai as genai
+import os
+from dotenv import load_dotenv
 
-data = json.dumps({"email": "test@test.com", "password": "password"}).encode('utf-8')
-req = urllib.request.Request(
-    'https://biosync-2.onrender.com/auth/login',
-    data=data,
-    headers={
-        'Origin': 'http://localhost:5173',
-        'Content-Type': 'application/json'
-    },
-    method='POST'
-)
+# Load environment variables
+load_dotenv()
+
+api_key = os.getenv("GEMINI_API_KEY")
+
+print("API KEY:", api_key)
+
+# Configure Gemini
+genai.configure(api_key=api_key)
 
 try:
-    with urllib.request.urlopen(req) as response:
-        print("STATUS:", response.status)
-        print("HEADERS:")
-        print(response.headers)
-        print("BODY:")
-        print(response.read().decode('utf-8'))
-except urllib.error.HTTPError as e:
-    print("HTTP ERROR:", e.code)
-    print("HEADERS:")
-    print(e.headers)
-    print("BODY:")
-    print(e.read().decode('utf-8'))
+    model = genai.GenerativeModel("gemini-1.5-flash")
+
+    response = model.generate_content(
+        "Generate 5 short health tips."
+    )
+
+    print("\nGemini Response:")
+    print(response.text)
+
 except Exception as e:
-    print("ERROR:", str(e))
+    print("\nGemini Error:")
+    print(e)
