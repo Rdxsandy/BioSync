@@ -103,13 +103,12 @@ To ensure system reliability and engineering discipline, several test suites hav
 
 ## Team Roles
 - **Sundeep - Full-Stack & AI/ML Engineer**
-  - **Architecture & Database:** Designed the core system architecture, mapped out the MongoDB data models/schemas, and successfully integrated MongoDB Atlas for flexible data storage.
+  - **Architecture & Database:** Designed the core system architecture, developed the MongoDB database schemas and models, and implemented the secure database connection to MongoDB Atlas.
   - **AI/ML:** Developed and integrated the core machine learning services to power intelligent predictions.
   - **Backend:** Engineered the `activity` and `health` API services using FastAPI; managed the end-to-end backend deployment.
   - **Frontend:** Built the interactive analytics dashboard to effectively visualize user data and AI-driven health insights.
 - **[Teammate Name] - [Role]**: [Brief description of contributions, e.g., JWT integration, documentation]
-- **[Teammate Name] - [Role]**: [Brief description of contributions, e.g., Food Image Classification integration, testing].
-
+- **[Teammate Name] - [Role]**: [Brief description of contributions, e.g., Food Image Classification integration, testing]
 ---
 
 ## API Documentation
