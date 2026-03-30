@@ -97,11 +97,10 @@ npm run dev
 
 Create a `.env` file in backend:
 
+```bash
 MONGODB_URL=your_mongodb_url
 SECRET_KEY=your_secret
 HF_TOKEN=your_token
-
-⚠️ Do not commit `.env` file to GitHub.
 
 
 
