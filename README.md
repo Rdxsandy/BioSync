@@ -101,6 +101,16 @@ Create a `.env` file in backend:
 MONGODB_URL=your_mongodb_url
 SECRET_KEY=your_secret
 HF_TOKEN=your_token
+```
+
+
+Added end-to-end project execution steps for frontend and backend
+
+## How to Run
+
+1. Start backend server  
+2. Start frontend server  
+3. Open browser at http://localhost:5173  
 
 
 
