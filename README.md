@@ -1,25 +1,3 @@
-<<<<<<< HEAD
-# BioSync – AI-Based Health Tracking System
-## Project Overview
-
-BioSync is an AI-powered health tracking system that monitors user lifestyle activities such as meals, physical activity, and daily habits to generate personalized health insights. The system integrates lifestyle tracking, AI-powered analysis, and machine learning predictions to help users understand and improve their health.
-
-The platform uses a modern client–server architecture to ensure scalability, maintainability, and performance. BioSync provides a dashboard that visualizes health data and displays AI-generated recommendations.
-
-## Architecture Diagram
-
-BioSync follows a layered architecture consisting of four main layers:
-
-### Frontend (Client Layer)
-### Backend (API Layer)
-### Database Layer
-### AI / Machine Learning Services
-### Architecture Flow
-
-User → Frontend (React) → Backend (FastAPI) → Database (MongoDB)
-                              ↓
-                         AI/ML Services → Predictions → Backend → Frontend Dashboard
-=======
 # BioSync - Personal Health Intelligence System (Codename: STOCKHOLM)
 
 ## Project Overview
@@ -82,8 +60,8 @@ BioSync integrates several machine learning models to provide deep insights:
 ---
 
 ## 1. Frontend Layer
->>>>>>> 4d73fc72755da4545e8e279777073b005e05de25
 
+The frontend is responsible for the user interface and user interaction.
 
 ## Technology Stack
 
@@ -179,6 +157,26 @@ HF_TOKEN=your_token
 
 Added end-to-end project execution steps for frontend and backend
 
+## Testing & Verification
+To ensure system reliability and engineering discipline, several test suites have been implemented to verify core functionalities:
+
+### 1. **System Integration Test** ([test.py](file:///c:/Users/vedan/Desktop/cllg%20project/BioSync/Backend/test.py))
+- **Role**: Verifies the end-to-end flow of the system.
+- **Coverage**: Database connectivity, user registration/login, activity logging, and ML model inference.
+- **Run**: `python test.py`
+
+### 2. **ML Logic & Data Processing Test** ([test_ml_logic.py](file:///c:/Users/vedan/Desktop/cllg%20project/BioSync/Backend/test_ml_logic.py))
+- **Role**: Validates the mathematical and data-handling logic behind the AI services.
+- **Coverage**: Unit tests for `safe_float` conversion, mock activity averaging, and data imputation logic.
+- **Run**: `python test_ml_logic.py`
+
+### 3. **Security & Cryptography Test** ([test_auth_crypto.py](file:///c:/Users/vedan/Desktop/cllg%20project/BioSync/Backend/test_auth_crypto.py))
+- **Role**: Ensures the integrity of user data and secure communication.
+- **Coverage**: Verifies password hashing (bcrypt), password matching logic, and JWT token generation.
+- **Run**: `python test_auth_crypto.py`
+
+---
+
 ## How to Run
 
 1. **Start Backend Server**:
@@ -193,7 +191,4 @@ Added end-to-end project execution steps for frontend and backend
    ```
 3. **Open Browser**:
    Visit [http://localhost:5173](http://localhost:5173) to access the application.
-
-
-
 
