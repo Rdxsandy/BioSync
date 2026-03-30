@@ -122,6 +122,15 @@ The backend APIs are documented using FastAPI Swagger UI.
 ![FastAPI Docs](docs/images/Screenshot%202026-03-30%20112014.png)
 ![FastAPI Docs](docs/images/Screenshot%202026-03-30%20112041.png)
 ![FastAPI Docs](docs/images/Screenshot%202026-03-30%20112116.png)
+![FastAPI Docs](docs/images/Screenshot%202026-03-30%20112158.png)
+
+![FastAPI Docs](docs/images/Screenshot%202026-03-30%20112227.png)
+
+![FastAPI Docs](docs/images/Screenshot%202026-03-30%20112252.png)
+
+![FastAPI Docs](docs/images/Screenshot%202026-03-30%20112316.png)
+
+![FastAPI Docs](docs/images/Screenshot%202026-03-30%20112342.png)
 
 Each module typically contains:
 
