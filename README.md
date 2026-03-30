@@ -93,7 +93,15 @@ npm install
 npm run dev
 ```
 
+## Environment Setup
 
+Create a `.env` file in backend:
+
+MONGODB_URL=your_mongodb_url
+SECRET_KEY=your_secret
+HF_TOKEN=your_token
+
+⚠️ Do not commit `.env` file to GitHub.
 
 
 
