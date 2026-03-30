@@ -114,7 +114,10 @@ To ensure system reliability and engineering discipline, several test suites hav
   - **Frontend:** Contributed significantly to the UI/UX development of the dashboard, activity tracking page, and health insights page.
   - **AI Integration:** Implemented the Gemini-powered health insights feature to provide users with personalized, AI-driven actionable advice.
 
-- **[Teammate Name] - [Role]**: [Brief description of contributions, e.g., JWT authentication integration, testing, etc.]
+- **Vedant - Security, Frontend & DevOps**
+  - **Security & Auth:** Developed the user authentication system, including login, signup, and secure JWT (JSON Web Token) implementation.
+  - **Deployment:** Successfully managed and executed the frontend deployment to Vercel.
+  - **Documentation:** Drafted and structured the core project documentation, ensuring clear setup instructions and architectural overviews.
 ---
 
 ## API Documentation
