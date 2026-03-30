@@ -1,0 +1,16 @@
+fastapi
+uvicorn
+joblib
+numpy
+pymongo
+python-dotenv
+passlib[bcrypt]
+python-jose[cryptography]
+python-multipart
+requests
+email-validator
+scikit-learn
+tensorflow
+pydantic
+pydantic-settings
+bcrypt
