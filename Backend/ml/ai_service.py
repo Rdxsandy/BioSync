@@ -11,7 +11,7 @@ def analyze_food_image(image_path):
             return {"error": "GEMINI_API_KEY is missing"}
             
         genai.configure(api_key=api_key)
-        model = genai.GenerativeModel("gemini-1.5-flash")
+        model = genai.GenerativeModel("gemini-2.5-flash")
         
         img = PIL.Image.open(image_path)
         
