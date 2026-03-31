@@ -1,18 +1,18 @@
 services:
-  # Backend FastAPI Service
   - type: web
-    name: biosync-backend
+    name: stock-home-backend
     env: python
-    buildCommand: "cd Backend && pip install -r requirements.txt"
-    startCommand: "cd Backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+    rootDir: Backend
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "uvicorn app.main:app --host 0.0.0.0 --port $PORT"
     envVars:
       - key: PYTHON_VERSION
-        value: 3.11.0
-      - key: MONGODB_URL
+        value: 3.10.12
+      - key: GEMINI_API_KEY
         sync: false
       - key: HF_TOKEN
         sync: false
-      - key: GEMINI_API_KEY
+      - key: MONGO_URI
         sync: false
       - key: SECRET_KEY
-        generateValue: true
+        sync: false

@@ -17,26 +17,16 @@ pymongo
 numpy
 pandas
 scikit-learn
-scipy
+joblib
 
-torch
-transformers
-accelerate
-safetensors
-huggingface_hub
-
-tensorflow
+tensorflow-cpu
 keras
 h5py
 
 google-generativeai
-google-api-python-client
 
 protobuf>=4.25.8,<6
 
 tqdm
 rich
-sympy
-networkx
 pillow
-psutil

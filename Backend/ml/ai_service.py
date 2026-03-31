@@ -7,8 +7,7 @@ HF_TOKEN = os.getenv("HF_TOKEN")
 API_URL = "https://router.huggingface.co/hf-inference/models/google/vit-base-patch16-224"
 
 headers = {
-    "Authorization": f"Bearer {HF_TOKEN}",
-    "Content-Type": "application/json"
+    "Authorization": f"Bearer {HF_TOKEN}"
 }
 
 
@@ -19,16 +18,10 @@ def analyze_food_image(image_path):
         with open(image_path, "rb") as f:
             image_bytes = f.read()
 
-        image_base64 = base64.b64encode(image_bytes).decode("utf-8")
-
-        payload = {
-            "inputs": image_base64
-        }
-
         response = requests.post(
             API_URL,
             headers=headers,
-            json=payload,
+            data=image_bytes,
             timeout=120
         )
 
