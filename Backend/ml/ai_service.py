@@ -1,43 +1,51 @@
-import requests
+import google.generativeai as genai
 import os
-import base64
-
-HF_TOKEN = os.getenv("HF_TOKEN")
-
-API_URL = "https://router.huggingface.co/hf-inference/models/google/vit-base-patch16-224"
-
-headers = {
-    "Authorization": f"Bearer {HF_TOKEN}"
-}
-
+import PIL.Image
+import json
 
 def analyze_food_image(image_path):
-
     try:
-
-        with open(image_path, "rb") as f:
-            image_bytes = f.read()
-
-        response = requests.post(
-            API_URL,
-            headers=headers,
-            data=image_bytes,
-            timeout=120
-        )
-
-        if response.status_code != 200:
-            return {"error": response.text}
-
-        result = response.json()
-
-        food_name = result[0]["label"]
-
+        # Load Gemini Key that we just set in Render
+        api_key = os.getenv("GEMINI_API_KEY")
+        if not api_key:
+            return {"error": "GEMINI_API_KEY is missing"}
+            
+        genai.configure(api_key=api_key)
+        model = genai.GenerativeModel("gemini-1.5-flash")
+        
+        img = PIL.Image.open(image_path)
+        
+        prompt = """
+        Analyze this food image. Identify the food, estimate the calories, suggest the best time to eat it, and provide a short piece of dietary advice.
+        You MUST respond ONLY with a valid JSON object in this exact format:
+        {
+            "food": "Name of the food",
+            "calories": "e.g. 350 kcal",
+            "best_time": "e.g. Breakfast",
+            "advice": "short dietary advice"
+        }
+        Do not add markdown formatting or backticks around the json.
+        """
+        
+        response = model.generate_content([prompt, img])
+        
+        # Clean response string to ensure it parses as JSON
+        text = response.text.strip()
+        if text.startswith('```json'):
+            text = text[7:]
+        if text.startswith('```'):
+            text = text[3:]
+        if text.endswith('```'):
+            text = text[:-3]
+            
+        result = json.loads(text.strip())
+        
         return {
-            "food": food_name,
-            "calories": "Estimated by AI",
-            "best_time": "Lunch",
-            "advice": f"{food_name} can be consumed as part of a balanced diet."
+            "food": result.get("food", "Unknown Food"),
+            "calories": result.get("calories", "Unknown"),
+            "best_time": result.get("best_time", "Anytime"),
+            "advice": result.get("advice", "Consume as part of a balanced diet.")
         }
 
     except Exception as e:
-        return {"error": str(e)}
+        return {"error": f"AI Error: {str(e)}"}
