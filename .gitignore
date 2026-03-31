@@ -1,5 +1,16 @@
 venv/
+.venv/
+.venv2/
 __pycache__/
 *.pyc
+*.pyo
+.env
 Backend/.env
 Fronted/.env
+
+# Test & local scratch files
+*.txt
+*.json
+test_*.py
+dummy_*.jpg
+uploads/
