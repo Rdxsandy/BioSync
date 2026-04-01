@@ -5,11 +5,29 @@ from fastapi.responses import JSONResponse
 from dotenv import load_dotenv
 import os
 import traceback
+import asyncio
+import httpx
 
 # Load environment variables
 load_dotenv()
 
 app = FastAPI()
+
+@app.on_event("startup")
+async def start_keep_awake():
+    async def ping_server():
+        while True:
+            await asyncio.sleep(300) # Wait 5 minutes
+            url = os.getenv("RENDER_EXTERNAL_URL")
+            if url:
+                try:
+                    async with httpx.AsyncClient() as client:
+                        await client.get(f"{url}/health")
+                        print(f"Keep-awake ping sent to {url}/health")
+                except Exception as e:
+                    print(f"Keep-awake ping failed: {e}")
+
+    asyncio.create_task(ping_server())
 
 # Allowed frontend origins
 origins = [
