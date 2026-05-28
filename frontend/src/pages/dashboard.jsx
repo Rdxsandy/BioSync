@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import API from "../services/api";
 
 import Navbar from "../components/navbar";
@@ -8,6 +9,8 @@ import ActivityChart from "../components/activitychart";
 
 function Dashboard() {
   const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const fetchDashboard = async () => {
     try {
@@ -17,14 +20,33 @@ function Dashboard() {
 
       // backend now returns { message, data }
       setData(response.data.data);
-    } catch (error) {
-      console.error("Dashboard fetch error:", error);
+    } catch (err) {
+      console.error("Dashboard fetch error:", err);
+      // 401 is handled by the api.js interceptor (redirects to login)
+      // For other errors, show an error message
+      if (err.response?.status !== 401) {
+        setError(err.response?.data?.detail || "Failed to load dashboard. Please try again.");
+      }
     }
   };
 
   useEffect(() => {
     fetchDashboard();
   }, []);
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen gap-4">
+        <p className="text-lg font-semibold text-red-600">⚠ {error}</p>
+        <button
+          onClick={() => navigate("/")}
+          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition"
+        >
+          Go to Login
+        </button>
+      </div>
+    );
+  }
 
   if (!data) {
     return (

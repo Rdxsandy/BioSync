@@ -21,14 +21,17 @@ function Login() {
       console.log(response.data);
 
       const token = response.data.access_token;
+      if (!token) {
+        alert("Login failed: No token received");
+        return;
+      }
       localStorage.setItem("token", token);
-
-      alert("Login successful");
 
       navigate("/dashboard");
     } catch (error) {
       console.error(error);
-      alert("Login failed");
+      const msg = error.response?.data?.detail || "Login failed. Please try again.";
+      alert(msg);
     }
   };
 

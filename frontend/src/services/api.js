@@ -20,4 +20,16 @@ API.interceptors.request.use(
   },
 );
 
+// Handle 401 responses — clear token and redirect to login
+API.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      localStorage.removeItem("token");
+      window.location.href = "/";
+    }
+    return Promise.reject(error);
+  },
+);
+
 export default API;
