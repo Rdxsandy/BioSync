@@ -118,6 +118,12 @@ To ensure system reliability and engineering discipline, several test suites hav
   - **Security & Auth:** Developed the user authentication system, including login, signup, and secure JWT (JSON Web Token) implementation.
   - **Deployment:** Successfully managed and executed the frontend deployment to Vercel.
   - **Documentation:** Drafted and structured the core project documentation, ensuring clear setup instructions and architectural overviews.
+
+- **Ashutosh - QA, API Testing & Frontend**
+  - **API Documentation:** Authored and organized the comprehensive REST API reference, covering all endpoints across `auth`, `activity`, `meals`, `dashboard`, `health`, and `ml` modules — ensuring each route is clearly described with request/response schemas.
+  - **API Testing:** Conducted thorough API testing using both **Swagger UI** (FastAPI's built-in interface) and **Postman**, verifying endpoint correctness, error handling, authentication flows, and edge cases across the entire backend.
+  - **Frontend:** Contributed to the foundational UI layout and basic interface components, establishing a consistent structure for key pages of the application.
+
 ---
 
 ## API Documentation
